@@ -1,0 +1,180 @@
+<mxfile host="65bd71144e">
+    <diagram name="to-be" id="to-be-architecture">
+        <mxGraphModel dx="1662" dy="283" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="e-mon-alb" value="сбор метрик" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="alb" target="monitoring" edge="1">
+                    <mxGeometry x="-0.009" y="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1270" y="230"/>
+                            <mxPoint x="1270" y="991"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="title" value="&lt;b&gt;InsureTech — технологическая архитектура (to-be)&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="20" width="1090" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="sla-block" value="&lt;b&gt;Требования бизнеса:&lt;/b&gt;&lt;br&gt;RTO 45 мин, RPO 15 мин, доступность 99,9%, 24/7,&lt;br&gt;равное время загрузки страниц по всем регионам РФ" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;verticalAlign=top;spacingLeft=10;spacingTop=10;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="70" width="520" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="strategy-block" value="&lt;b&gt;Стратегия масштабирования и отказоустойчивости:&lt;/b&gt;&lt;br&gt;Горизонтальное масштабирование в 3 зонах доступности. Вертикальное — только в рамках роста до 50 ГБ. Дополнительные зоны необходимы для 99,9% доступности и географически-равномерного отклика." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;verticalAlign=top;spacingLeft=10;spacingTop=10;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="600" y="70" width="530" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="clients" value="&lt;b&gt;Пользователи и партнёры&lt;/b&gt;&lt;br&gt;(B2B/B2C, браузеры, мобильные, API-интеграции)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="180" width="200" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="cdn" value="&lt;b&gt;Yandex Cloud CDN&lt;/b&gt;&lt;br&gt;кэширование статики, гео-распределение контента" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="180" width="220" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="alb" value="&lt;b&gt;Yandex Application Load Balancer&lt;/b&gt;&lt;br&gt;L7 Geo-балансировка, TLS termination, health-check /health" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="180" width="280" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge-cdn" value="HTTPS/&lt;div&gt;HTTP2&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="clients" target="cdn" edge="1">
+                    <mxGeometry y="50" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge-alb" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="cdn" target="alb" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="failover-note" value="&lt;b&gt;Фейловер-стратегия (уровень клиента):&lt;/b&gt;&lt;br&gt;ALB проверяет health-check каждой зоны. При отказе зоны трафик автоматически перенаправляется в следующую ближайшую живую зону (failover по гео/приоритету). RTO достигается за счёт автоматического переключения без ручных действий." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=10;spacingTop=10;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="1150" y="70" width="280" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="az1" value="&lt;b&gt;Зона доступности 1 (Москва)&lt;/b&gt;" style="verticalAlign=top;align=left;overflow=width;fillColor=#e3ebff;gradientColor=none;strokeColor=#6c8ebf;spacingTop=5;spacingLeft=5;rounded=1;html=1;whiteSpace=wrap;container=0;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="371" width="340" height="520" as="geometry"/>
+                </mxCell>
+                <mxCell id="k8s1" value="&lt;b&gt;Yandex Managed Service for Kubernetes&lt;/b&gt;&lt;br&gt;cluster 1 — независимый&lt;br&gt;HPA, PDB, anti-affinity по нодам" style="verticalAlign=top;align=left;overflow=width;fillColor=none;gradientColor=none;strokeColor=#5282ff;spacingTop=5;spacingLeft=5;rounded=1;html=1;whiteSpace=wrap;container=0;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="411" width="300" height="310" as="geometry"/>
+                </mxCell>
+                <mxCell id="app1" value="&lt;b&gt;core-app / client-info /&lt;br&gt;ins-product-aggregator /&lt;br&gt;ins-comp-settlement&lt;/b&gt;&lt;br&gt;реплики сервисов, HPA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="501" width="260" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="ingress1" value="&lt;b&gt;Ingress Controller (nginx)&lt;/b&gt;&lt;br&gt;внутренняя балансировка, /health" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="641" width="260" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-app1" value="внутренний трафик" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="ingress1" target="app1" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="db1" value="&lt;b&gt;PostgreSQL кластер (Patroni)&lt;/b&gt;&lt;br&gt;master + sync replica&lt;br&gt;внутри зоны — синхронная репликация" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="771" width="260" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-db1" value="TCP" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="app1" target="db1" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="az2" value="&lt;b&gt;Зона доступности 2 (Санкт-Петербург)&lt;/b&gt;" style="verticalAlign=top;align=left;overflow=width;fillColor=#e3ebff;gradientColor=none;strokeColor=#6c8ebf;spacingTop=5;spacingLeft=5;rounded=1;html=1;whiteSpace=wrap;container=0;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="410" y="371" width="340" height="520" as="geometry"/>
+                </mxCell>
+                <mxCell id="k8s2" value="&lt;b&gt;Yandex Managed Service for Kubernetes&lt;/b&gt;&lt;br&gt;cluster 2 — независимый&lt;br&gt;HPA, PDB, anti-affinity по нодам" style="verticalAlign=top;align=left;overflow=width;fillColor=none;gradientColor=none;strokeColor=#5282ff;spacingTop=5;spacingLeft=5;rounded=1;html=1;whiteSpace=wrap;container=0;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="430" y="411" width="300" height="310" as="geometry"/>
+                </mxCell>
+                <mxCell id="app2" value="&lt;b&gt;core-app / client-info /&lt;br&gt;ins-product-aggregator /&lt;br&gt;ins-comp-settlement&lt;/b&gt;&lt;br&gt;реплики сервисов, HPA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="450" y="501" width="260" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="ingress2" value="&lt;b&gt;Ingress Controller (nginx)&lt;/b&gt;&lt;br&gt;внутренняя балансировка, /health" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="450" y="641" width="260" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-app2" value="внутренний трафик" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="ingress2" target="app2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="db2" value="&lt;b&gt;PostgreSQL кластер (Patroni)&lt;/b&gt;&lt;br&gt;async replica + sync replica&lt;br&gt;межзональная асинхронная репликация" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="450" y="771" width="260" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-db2" value="TCP" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="app2" target="db2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="az3" value="&lt;b&gt;Зона доступности 3 (Екатеринбург)&lt;/b&gt;" style="verticalAlign=top;align=left;overflow=width;fillColor=#e3ebff;gradientColor=none;strokeColor=#6c8ebf;spacingTop=5;spacingLeft=5;rounded=1;html=1;whiteSpace=wrap;container=0;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="840" y="371" width="340" height="520" as="geometry"/>
+                </mxCell>
+                <mxCell id="k8s3" value="&lt;b&gt;Yandex Managed Service for Kubernetes&lt;/b&gt;&lt;br&gt;cluster 3 — независимый&lt;br&gt;HPA, PDB, anti-affinity по нодам" style="verticalAlign=top;align=left;overflow=width;fillColor=none;gradientColor=none;strokeColor=#5282ff;spacingTop=5;spacingLeft=5;rounded=1;html=1;whiteSpace=wrap;container=0;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="860" y="411" width="300" height="310" as="geometry"/>
+                </mxCell>
+                <mxCell id="app3" value="&lt;b&gt;core-app / client-info /&lt;br&gt;ins-product-aggregator /&lt;br&gt;ins-comp-settlement&lt;/b&gt;&lt;br&gt;реплики сервисов, HPA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="880" y="501" width="260" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="ingress3" value="&lt;b&gt;Ingress Controller (nginx)&lt;/b&gt;&lt;br&gt;внутренняя балансировка, /health" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="880" y="641" width="260" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-app3" value="внутренний трафик" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="ingress3" target="app3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="db3" value="&lt;b&gt;PostgreSQL кластер (Patroni)&lt;/b&gt;&lt;br&gt;async replica, потенциальный мастер&lt;br&gt;автоматический failover БД" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="880" y="771" width="260" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-db3" value="TCP" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="app3" target="db3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="hc1" value="health-check /health" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="alb" target="ingress1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="700" y="330"/>
+                            <mxPoint x="-10" y="330"/>
+                            <mxPoint x="-10" y="660"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="hc2" value="health-check /health" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="alb" target="ingress2" edge="1">
+                    <mxGeometry x="-0.3149" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="700" y="330"/>
+                            <mxPoint x="400" y="330"/>
+                            <mxPoint x="400" y="660"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="hc3" value="health-check /health" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="alb" target="ingress3" edge="1">
+                    <mxGeometry x="-0.6" y="10" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="700" y="330"/>
+                            <mxPoint x="810" y="330"/>
+                            <mxPoint x="810" y="660"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="k8s-hc" value="&lt;b&gt; readiness/liveness probes&lt;/b&gt; — kubelet проверяет поды сервисов" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="30" y="341" width="380" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="db-repl-1" value="async&amp;nbsp;&lt;div&gt;WAL-репликация&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="db1" target="db2" edge="1">
+                    <mxGeometry x="0.0909" y="30" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="db-repl-2" value="async&amp;nbsp;&lt;div&gt;WAL-репликация&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="db2" target="db3" edge="1">
+                    <mxGeometry x="-0.0909" y="40" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="backup" value="&lt;b&gt;Yandex Object Storage (S3)&lt;/b&gt;&lt;br&gt;WAL-архивы + полные бэкапы (pgBackRest)&lt;br&gt;retention 30 дней, RPO 15 мин" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="410" y="941" width="340" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-backup" value="бэкапы" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="db2" target="backup" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="monitoring" value="&lt;b&gt;Мониторинг и алертинг&lt;/b&gt;&lt;br&gt;Prometheus + Grafana + Alertmanager&lt;br&gt;метрики, логи, трейсы, алерты" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="840" y="941" width="340" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-mon-k8s" value="сбор метрик" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="k8s3" target="monitoring" edge="1">
+                    <mxGeometry x="-0.0799" y="90" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1240" y="555"/>
+                            <mxPoint x="1240" y="966"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="k8s-comment" value="&lt;b&gt;Почему независимые кластеры Kubernetes:&lt;/b&gt;&lt;br&gt;• Изоляция отказов между зонами — проблема в одном кластере не влияет на другие.&lt;br&gt;• Меньше сетевых задержек между мастером и нодами внутри зоны.&lt;br&gt;• Проще управлять апгрейдами, тестированием и изменениями по зонам.&lt;br&gt;• Yandex Managed Service for Kubernetes разворачивается в рамках одного региона/зоны." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3ebff;strokeColor=#6c8ebf;align=left;verticalAlign=top;spacingLeft=10;spacingTop=10;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="1071" width="540" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="db-comment" value="&lt;b&gt;Конфигурация БД (RTO 45 мин, RPO 15 мин):&lt;/b&gt;&lt;br&gt;• Patroni управляет кластером PostgreSQL и автоматически переключает мастер при сбое (RTO ≈ 45 мин).&lt;br&gt;• Внутри зоны — синхронная репликация (0 потерь).&lt;br&gt;• Между зонами — асинхронная WAL-репликация (допустимая задержка в пределах RPO).&lt;br&gt;• WAL-архивы и полные бэкапы в S3 каждые 15 минут обеспечивают RPO 15 мин." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=left;verticalAlign=top;spacingLeft=10;spacingTop=10;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1071" width="530" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="sharding" value="&lt;b&gt;Шардирование БД:&lt;/b&gt; на текущий момент не применяется (50 ГБ помещается в одну БД). При росте данных выше 500 ГБ или нагрузки выше возможностей одного мастера — внедрить горизонтальное шардирование по client_id/region с использованием Citus или PostgreSQL partitioning + логическое разделение по зонам." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;spacingLeft=10;spacingTop=10;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="1200" width="1090" height="80" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
