@@ -1,0 +1,36 @@
+Name:                                                     scaletestapp-hpa
+Namespace:                                                default
+Labels:                                                   <none>
+Annotations:                                              <none>
+CreationTimestamp:                                        Sun, 28 Jun 2026 11:03:16 +0300
+Reference:                                                Deployment/scaletestapp
+Metrics:                                                  ( current / target )
+  resource memory on pods  (as a percentage of request):  37% (5822Ki) / 80%
+Min replicas:                                             1
+Max replicas:                                             10
+Deployment pods:                                          2 current / 2 desired
+Conditions:
+  Type            Status  Reason               Message
+  ----            ------  ------               -------
+  AbleToScale     True    ScaleDownStabilized  recent recommendations were higher than current one, applying the highest recent recommendation
+  ScalingActive   True    ValidMetricFound     the HPA was able to successfully calculate a replica count from memory resource utilization (percentage of request)
+  ScalingLimited  False   DesiredWithinRange   the desired count is within the acceptable range
+Events:
+  Type     Reason                        Age                    From                       Message
+  ----     ------                        ----                   ----                       -------
+  Normal   SuccessfulRescale             59m                    horizontal-pod-autoscaler  New size: 1; reason: All metrics below target
+  Normal   SuccessfulRescale             34m                    horizontal-pod-autoscaler  New size: 2; reason: memory resource utilization (percentage of request) above target
+  Warning  FailedGetScale                25m                    horizontal-pod-autoscaler  the server was unable to return a response in the time allotted, but may still be processing the request (get deployments scaletestapp)
+  Warning  FailedUpdateStatus            25m                    horizontal-pod-autoscaler  Operation cannot be fulfilled on horizontalpodautoscalers.autoscaling "scaletestapp-hpa": the object has been modified; please apply your changes to the latest version and try again
+  Warning  FailedGetResourceMetric       24m (x17 over 87m)     horizontal-pod-autoscaler  failed to get memory utilization: unable to get metrics for resource memory: unable to fetch metrics from resource metrics API: the server is currently unable to handle the request (get pods.metrics.k8s.io)
+  Warning  FailedComputeMetricsReplicas  24m (x17 over 87m)     horizontal-pod-autoscaler  invalid metrics (1 invalid out of 1), first error is: failed to get memory resource metric value: failed to get memory utilization: unable to get metrics for resource memory: unable to fetch metrics from resource metrics API: the server is currently unable to handle the request (get pods.metrics.k8s.io)
+  Normal   SuccessfulRescale             20m (x2 over 76m)      horizontal-pod-autoscaler  New size: 3; reason: memory resource utilization (percentage of request) above target
+  Warning  FailedGetResourceMetric       8m27s (x4 over 9m12s)  horizontal-pod-autoscaler  failed to get memory utilization: unable to get metrics for resource memory: no metrics returned from resource metrics API
+  Warning  FailedComputeMetricsReplicas  8m27s (x4 over 9m12s)  horizontal-pod-autoscaler  invalid metrics (1 invalid out of 1), first error is: failed to get memory resource metric value: failed to get memory utilization: unable to get metrics for resource memory: no metrics returned from resource metrics API
+  Normal   SuccessfulRescale             4m11s                  horizontal-pod-autoscaler  New size: 2; reason: All metrics below target
+NAME                                READY   STATUS    RESTARTS   AGE
+pod/scaletestapp-5dc9b85874-ck6jt   1/1     Running   0          76m
+pod/scaletestapp-5dc9b85874-nk58s   1/1     Running   0          34m
+
+NAME                                                   REFERENCE                 TARGETS           MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/scaletestapp-hpa   Deployment/scaletestapp   memory: 37%/80%   1         10        2          88m
